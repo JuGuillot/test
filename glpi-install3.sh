@@ -107,7 +107,7 @@ EOF
 function setup_db() {
         info "Setting up GLPI..."
         cd /var/www/html/glpi
-        php bin/console db:install --db-name=glpi --db-user=glpi_user --db-password=$SQLGLPIPWD --no-interaction
+        php bin/console db:install --db-name=pharmgreen.glpi --db-user=glpi_user --db-password=$SQLGLPIPWD --no-interaction
         rm -rf /var/www/html/glpi/install
 }
 
@@ -128,7 +128,7 @@ function display_credentials() {
         info "==> Database:"
         info "root password:           $SLQROOTPWD"
         info "glpi_user password:      $SQLGLPIPWD"
-        info "GLPI database name:          glpi"
+        info "GLPI database name:          pharmgreen.glpi"
         info "<==========================================>"
         echo ""
         info "If you encounter any issue with this script, please report it on GitHub: https://github.com/jr0w3/GLPI_install_script/issues"
