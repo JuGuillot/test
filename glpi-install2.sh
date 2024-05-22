@@ -29,15 +29,10 @@ function install_packages() {
 }
 
 function mariadb_configure() {
-        info "Configuring MariaDB..."
-        sleep 1
-        SLQROOTPWD=$(openssl rand -base64 48 | cut -c1-12)
-        SQLGLPIPWD=$(openssl rand -base64 48 | cut -c1-12)
         systemctl start mariadb
-        sleep 1
 
         # Set the root password
-        mysql -e "UPDATE mysql.user SET Password = PASSWORD('$SLQROOTPWD') WHERE User = 'root'"
+        mysql -e "UPDATE mysql.user SET Password = PASSWORD('Azerty1*') WHERE User = 'root'"
         # Remove anonymous user accounts
         mysql -e "DELETE FROM mysql.user WHERE User = ''"
         # Disable remote root login
@@ -49,19 +44,11 @@ function mariadb_configure() {
         # Create a new database
         mysql -e "CREATE DATABASE glpi"
         # Create a new user
-        mysql -e "CREATE USER 'glpi_user'@'localhost' IDENTIFIED BY '$SQLGLPIPWD'"
+        mysql -e "CREATE USER 'glpi_user'@'localhost' IDENTIFIED BY 'Azerty1*'"
         # Grant privileges to the new user for the new database
         mysql -e "GRANT ALL PRIVILEGES ON glpi.* TO 'glpi_user'@'localhost'"
         # Reload privileges
         mysql -e "FLUSH PRIVILEGES"
-
-        # Initialize time zones datas
-        mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root -p'$SLQROOTPWD' mysql
-        #Ask tz
-        dpkg-reconfigure tzdata
-        systemctl restart mariadb
-        sleep 1
-        mysql -e "GRANT SELECT ON mysql.time_zone_name TO 'glpi_user'@'localhost'"
 }
 
 function install_glpi() {
@@ -107,7 +94,7 @@ EOF
 function setup_db() {
         info "Setting up GLPI..."
         cd /var/www/html/glpi
-        php bin/console db:install --db-name=glpi --db-user=glpi_user --db-password=$SQLGLPIPWD --no-interaction
+        php bin/console db:install --db-name=pharmgreen.glpi --db-user=glpi_user --db-password=Azerty1* --no-interaction
         rm -rf /var/www/html/glpi/install
 }
 
@@ -126,18 +113,13 @@ function display_credentials() {
         info "http://$IPADRESS or http://$HOST"
         echo ""
         info "==> Database:"
-        info "root password:           $SLQROOTPWD"
-        info "glpi_user password:      $SQLGLPIPWD"
-        info "GLPI database name:          glpi"
+        info "root password:           Azerty1*"
+        info "glpi_user password:      Azerty1*"
+        info "GLPI database name:          pharmgreen.glpi"
         info "<==========================================>"
         echo ""
-        info "If you encounter any issue with this script, please report it on GitHub: https://github.com/jr0w3/GLPI_install_script/issues"
 }
 
-check_root
-check_distro
-confirm_installation
-network_info
 install_packages
 mariadb_configure
 install_glpi
