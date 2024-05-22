@@ -55,32 +55,6 @@ define('DB_TYPE', 'mysqli');
 chown -R www-data:www-data /var/www/html/glpi
 
 echo "L'installation de GLPI est terminée !"
-
-
-
-# traduction
-Cette commande shell assigne la valeur de la variable `db_name` en utilisant le contenu d'un fichier appelé `config.txt`. Voici une explication détaillée de chaque partie de la commande :
-
-1. **`grep "db_name" config.txt`** :
-    
-    - **`grep`** : C'est une commande Unix utilisée pour rechercher des motifs dans un fichier.
-    - **`"db_name"`** : C'est le motif recherché. Ici, nous cherchons une ligne contenant `db_name`.
-    - **`config.txt`** : C'est le fichier dans lequel nous cherchons le motif.
-    
-    Cette partie de la commande recherche et renvoie toutes les lignes de `config.txt` qui contiennent le mot `db_name`.
-    
-2. **`|`** :
-    
-    - C'est un opérateur de pipe qui prend la sortie de la commande à gauche (ici, `grep "db_name" config.txt`) et l'utilise comme entrée pour la commande à droite.
-3. **`cut -d "=" -f 2`** :
-    
-    - **`cut`** : C'est une commande utilisée pour découper des sections de chaque ligne d'un fichier ou de l'entrée standard.
-    - **`-d "="`** : Cette option définit le délimiteur comme étant le signe `=`. Cela signifie que la commande `cut` va utiliser `=` pour séparer les champs.
-    - **`-f 2`** : Cette option indique que nous voulons le deuxième champ de chaque ligne, en utilisant `=` comme séparateur.
-    
-    Cette partie de la commande prend la sortie de `grep`, c'est-à-dire les lignes contenant `db_name`, et extrait tout ce qui se trouve après le signe `=` dans ces lignes.
-    
-4. **`db_name=$(...)`** :
     
     - Cette syntaxe permet d'assigner le résultat de la commande entre parenthèses à la variable `db_name`.
 
