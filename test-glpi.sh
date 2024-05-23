@@ -111,3 +111,5 @@ sudo systemctl reload apache2
 sed -i 's/^\(session\.cookie_httponly\s*=\s*\).*/\1on/' /etc/php/8.2/fpm/php.ini
 
 systemctl restart php8.2-fpm.service
+
+sudo systemctl restart apache2
