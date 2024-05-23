@@ -10,11 +10,20 @@ fi
 db_name=$(grep "^db_name" config.txt | cut -d "=" -f 2 | xargs)
 db_user=$(grep "^db_user" config.txt | cut -d "=" -f 2 | xargs)
 db_pass=$(grep "^db_pass" config.txt | cut -d "=" -f 2 | xargs)
-glpi_url=$(grep "^glpi_url" config.txt | cut -d "=" -f 2 | xargs)
+network_interface=$(grep "^network_interface" config.txt | cut -d "=" -f 2 | xargs)
 
 # Vérifier que les variables ne sont pas vides
-if [ -z "$db_name" ] || [ -z "$db_user" ] || [ -z "$db_pass" ] || [ -z "$glpi_url" ]; then
+if [ -z "$db_name" ] || [ -z "$db_user" ] || [ -z "$db_pass" ] || [ -z "$network_interface" ]; then
   echo "Une ou plusieurs variables de configuration sont manquantes dans config.txt !"
+  exit 1
+fi
+
+# Récupérer l'adresse IP de l'interface spécifiée
+ip_address=$(ip addr show $network_interface | grep "inet " | awk '{print $2}' | cut -d/ -f1)
+
+# Vérifier que l'adresse IP a été récupérée
+if [ -z "$ip_address" ]; then
+  echo "Impossible de récupérer l'adresse IP de l'interface $network_interface !"
   exit 1
 fi
 
@@ -35,7 +44,7 @@ mv glpi /var/www/html/
 # Configurer Apache
 echo "
 <VirtualHost *:80>
-  ServerName $glpi_url
+  ServerAlias $ip_address
   DocumentRoot /var/www/html/glpi
   <Directory /var/www/html/glpi>
     AllowOverride All
@@ -61,4 +70,4 @@ define('DB_TYPE', 'mysqli');
 
 chown -R www-data:www-data /var/www/html/glpi
 
-echo "L'installation de GLPI est terminée !"
+echo "L'installation de GLPI est terminée ! Adresse IP : http://$ip_address"
