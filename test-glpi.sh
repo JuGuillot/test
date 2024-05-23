@@ -51,7 +51,7 @@ chown www-data /var/log/glp
 
 # Création fichiers de configuration
 
-nano /var/www/glpi/inc/downstream.php
+touch /var/www/glpi/inc/downstream.php
 
 cat >/var/www/glpi/inc/downstream.php <<EOF
 <?php
@@ -60,7 +60,7 @@ if (file_exists(GLPI_CONFIG_DIR . '/local_define.php')) {
     require_once GLPI_CONFIG_DIR . '/local_define.php';
 EOF
 
-nano /etc/glpi/local_define.php
+touch /etc/glpi/local_define.php
 
 cat >/etc/glpi/local_define.php <<EOF
 <?php
@@ -70,7 +70,7 @@ EOF
 
 # Préparation config Apache2
 
-nano /etc/apache2/sites-available/support.pharmgreen.org
+touch /etc/apache2/sites-available/support.pharmgreen.org
 
 cat >/etc/apache2/sites-available/support.pharmgreen.org <<EOF
 <VirtualHost *:80>
