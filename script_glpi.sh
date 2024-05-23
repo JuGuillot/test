@@ -59,6 +59,8 @@ a2enmod rewrite
 service apache2 restart
 
 # Configurer GLPI
+config_file="/var/www/html/glpi/config/config_db.php"
+
 echo "<?php
 define('DB_NAME', '$db_name');
 define('DB_USER', '$db_user');
@@ -66,8 +68,16 @@ define('DB_PASS', '$db_pass');
 define('DB_HOST', 'localhost');
 define('DB_PORT', '3306');
 define('DB_TYPE', 'mysqli');
-?>" > /var/www/html/glpi/config/config_db.php
+?>" > $config_file
 
+# Vérifier que le fichier a été correctement créé
+if [ ! -f $config_file ]; then
+  echo "Le fichier de configuration de la base de données n'a pas été créé correctement !"
+  exit 1
+fi
+
+# Définir les permissions appropriées
 chown -R www-data:www-data /var/www/html/glpi
+chmod 644 $config_file
 
 echo "L'installation de GLPI est terminée ! Adresse IP : http://$ip_address"
