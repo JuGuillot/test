@@ -76,8 +76,37 @@ if [ ! -f $config_file ]; then
   exit 1
 fi
 
+# Afficher le contenu du fichier pour vérification
+echo "Contenu de $config_file :"
+cat $config_file
+
 # Définir les permissions appropriées
 chown -R www-data:www-data /var/www/html/glpi
 chmod 644 $config_file
+
+# Vérifier les permissions
+echo "Permissions sur $config_file :"
+ls -l $config_file
+
+# Activer le mode de débogage dans GLPI
+debug_config_file="/var/www/html/glpi/config/config.php"
+echo "<?php
+define('GLPI_MODE', 'DEBUG');
+define('GLPI_DEMO_MODE', false);
+define('GLPI_ROOT', '/var/www/html/glpi');
+define('GLPI_CONFIG_DIR', GLPI_ROOT . '/config');
+define('GLPI_VAR_DIR', GLPI_ROOT . '/files');
+define('GLPI_LOG_DIR', GLPI_ROOT . '/logs');
+define('GLPI_CRON_DIR', GLPI_ROOT . '/cron');
+define('GLPI_LOCAL_I18N_DIR', GLPI_ROOT . '/locales');
+?>" > $debug_config_file
+
+# Définir les permissions appropriées pour le fichier de configuration de débogage
+chown www-data:www-data $debug_config_file
+chmod 644 $debug_config_file
+
+# Vérifier les permissions sur le fichier de débogage
+echo "Permissions sur $debug_config_file :"
+ls -l $debug_config_file
 
 echo "L'installation de GLPI est terminée ! Adresse IP : http://$ip_address"
