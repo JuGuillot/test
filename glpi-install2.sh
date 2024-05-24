@@ -1,10 +1,15 @@
 #!/bin/bash
 
-# Lire les informations de configuration à partir du fichier texte
-db_name=$(grep "^db_name" config.txt | cut -d "=" -f 2 | xargs)                     # Nom de la BDD
-db_user=$(grep "^db_user" config.txt | cut -d "=" -f 2 | xargs)                     # Utilisateur BDD
-db_pass=$(grep "^db_pass" config.txt | cut -d "=" -f 2 | xargs)                     # Mot de passe BDD
-network_interface=$(grep "^network_interface" config.txt | cut -d "=" -f 2 | xargs) # Interface réseau
+#Fichier de configuration
+fichier_config="config.txt"
+
+#Sourcer le fichier de configuration
+source "$fichier_config"
+
+#Utilisation des variables importées
+echo "Nom d'utilisateur: $db_name"
+echo "Mot de passe: $db_pass"
+echo "Nom de BDD: $db_name"
 
 # Installation des paquets nécessaires
 apt update && apt upgrade -y
